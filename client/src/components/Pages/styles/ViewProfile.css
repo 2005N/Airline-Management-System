@@ -1,0 +1,14 @@
+.profile-card {
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-color: #e9f3ff;
+}
+
+.profile-img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  margin-top: 80px;
+  margin-left: 40px;
+}
