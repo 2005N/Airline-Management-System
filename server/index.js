@@ -61,6 +61,201 @@ app.post("/addreview/:id",(req,res)=>{
     })
 })
 
+app.get("/SearchFlights",(req,res)=>{
+    const sqlGet="select fb_id,departure,arrival,departureDate, returnDate, class,price from FlightBooking order by fb_id desc;"
+    db.query(sqlGet,(err,result)=>{
+        if(err)
+        res.send({err: err});
+        else
+        res.send(result);
+    })
+})
+
+app.post('/BookTicket',(req,res)=>{
+    const departure=req.body.departure;
+    const arrival=req.body.arrival;
+    const departureDate=req.body.departureDate;
+    const returnDate=req.body.returnDate;
+    const classs=req.body.class;
+    const price=req.body.price;
+    const sqlInsert='insert into FlightBooking (departure,arrival,departureDate,returnDate,class,price) values (?,?,?,?,?,?)';
+    db.query(sqlInsert,[departure,arrival,departureDate,returnDate,classs,price],(err,result)=>{
+        if(err)
+        res.send({err:err});
+    })
+})
+
+app.post("/AvailableFlights", (req, res) => {
+    console.log(req.body);
+    const { departureDate, returnDate, fares, departure, arrival } = req.body;
+
+    // Convert "2025-08-03" to "3-Aug-2025" format to match your database
+    const formatDateForDB = (dateStr) => {
+        const date = new Date(dateStr);
+        const day = date.getDate();
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const month = monthNames[date.getMonth()];
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+
+    const dbDepartureDate = formatDateForDB(departureDate);
+    const dbReturnDate = formatDateForDB(returnDate);
+
+    // Debug: Log the converted values
+    console.log('Original dates:', { departureDate, returnDate, fares });
+    console.log('Converted dates:', { dbDepartureDate, dbReturnDate });
+    console.log('Search patterns:', [`${dbDepartureDate}%`, `${dbReturnDate}%`, fares]);
+
+    // Use LIKE to match the date part of your datetime strings
+    const sqlGet = `
+    SELECT f.flight_no, s.schedule_id, f.airplane_id, a.max_seats,
+           s.departure_time, s.arrival_time, fs.status, f.fares 
+    FROM Flight f
+    INNER JOIN schedule s ON s.schedule_id = f.schedule_id
+    INNER JOIN FlightStatus fs ON fs.flightStatus_id = f.flightStatus_id
+    INNER JOIN airplane a ON a.airplane_id = f.airplane_id
+    WHERE s.departure_time LIKE ?
+      AND s.arrival_time LIKE ?
+      AND f.fares <= ?
+    `;
+
+    // console.log('Executing SQL:', sqlGet);
+    // console.log('With parameters:', [`${dbDepartureDate}%`, `${dbReturnDate}%`, fares]);
+
+    db.query(sqlGet, [`${dbDepartureDate}%`, `${dbReturnDate}%`, fares], (err, result) => {
+        if (err) {
+            console.error('SQL Error:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log('Query result:', result);
+        console.log('Result length:', result.length);
+        res.json(result);
+    });
+});
+
+app.get("/invoice/:id",(req,res)=>{
+    const {id}=req.params;
+    const sqlGet="select fname,lname from clients where client_id=?;"
+    db.query(sqlGet,id,(err,result)=>{
+        if(err)
+        res.send({err: err});
+        else
+        res.send(result);
+    })
+})
+
+app.get("/invoicefares",(req,res)=>{
+    const sqlGet="select flight_no,departure,price,arrival from FlightBooking LIMIT 1;"
+    db.query(sqlGet,(err,result)=>{
+        if(err)
+        res.send({err: err});
+        else{
+          res.send(result);
+        }
+    })
+})
+
+
+app.post("/UpdateFlightBooking",(req,res)=>{
+    const {id, price}=req.body;
+    console.log("inside flight booking:",req.body);
+
+    const sqlUpdate = `
+        UPDATE FlightBooking 
+        SET flight_no = (
+            SELECT f.flight_no 
+            FROM Flight f 
+            INNER JOIN Schedule s ON s.schedule_id = f.schedule_id 
+            WHERE s.schedule_id = ? AND f.fares = ?
+            LIMIT 1
+        )
+        WHERE flight_no IS NULL;
+    `;
+
+    db.query(sqlUpdate,[id,price],(err,result)=>{
+        if(err)
+        res.send({err: err});
+        else
+        res.send(result);
+    })
+})
+
+app.post("/invoiceconfirm", (req, res) => {
+    const client_id = req.body.client_id;
+    const schedule_id = req.body.schedule_id;
+    const airport_code = req.body.airport_code;
+    console.log(client_id,schedule_id,airport_code);
+    // const client_id=57;
+    // const schedule_id=56;
+    // const airport_code='DEL';
+
+    const sqlInsertTicket = `
+        INSERT INTO ticket (seat_no, departure_time, gate_no, airport_code)
+        SELECT t.nm, s.departure_time, a.gate_no, a.airport_code
+        FROM schedule s, tempseatgen t, airport a
+        WHERE s.schedule_id = ? AND a.airport_code = ?
+        ORDER BY rand()
+        LIMIT 1;
+    `;
+
+    db.query(sqlInsertTicket, [schedule_id, airport_code], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        const ticket_id = result.insertId;
+        console.log("ticket id: ",ticket_id);
+
+        const sqlGetFlight = `
+            SELECT flight_no, fares FROM Flight WHERE schedule_id = ? order by flight_no desc LIMIT 1;
+        `;
+
+        db.query(sqlGetFlight, [schedule_id], (err, flightResult) => {
+            if (err || flightResult.length === 0) {
+                return res.status(500).json({ error: "Flight not found" });
+            }
+
+            const flight_no = flightResult[0].flight_no;
+            const fares = flightResult[0].fares;
+            console.log(flight_no,fares);
+
+            const sqlInsertBooking = `
+                INSERT INTO booking (client_id, flight_no, ticket_id, airport_code, fares)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+
+            db.query(sqlInsertBooking, [client_id, flight_no, ticket_id, airport_code, fares], (err, bookingResult) => {
+                if (err) return res.status(500).json({ error: err.message });
+
+                res.json({
+                    success: true,
+                    client_id,
+                    ticket_id,
+                    flight_no,
+                    airport_code,
+                    fares
+                });
+            });
+        });
+    });
+});
+
+
+app.get("/showPass/:id",(req,res)=>{
+    const {id}=req.params;
+    const sqlGet=`select c.fname,c.lname,b.airport_code,
+    b.flight_no,a.gate_no, t.seat_no,t.departure_time 
+    from booking b inner join clients c on c.client_id=b.client_id 
+    inner join airport a on a.airport_code=b.airport_code 
+    inner join ticket t on t.ticket_id=b.ticket_id 
+    where c.client_id=?;`
+    db.query(sqlGet,id,(err,result)=>{
+        if(err)
+        res.send({err: err});
+        else
+        res.send(result);
+    })
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

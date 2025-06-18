@@ -1,0 +1,120 @@
+/* Table Styling */
+.styled-table {
+    border-collapse: collapse;
+    margin: auto;
+    font-size: 0.95em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 800px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+    padding: 14px 20px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #d1f1e0;
+}
+
+/* Button Styling */
+.btn {
+    border: none;
+    padding: 8px 14px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+/* Specific Button Colors */
+.btn-edit {
+    background-color: #007bb5;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #005f8d;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+.btn-view {
+    background-color: #e7e7e7;
+    color: #333;
+}
+
+.btn-view:hover {
+    background-color: #d5d5d5;
+}
+
+.btn-client {
+    background-color: #e82764;
+    color: white;
+    margin: 50px auto;
+    display: block;
+    width: 120px;
+    font-weight: bold;
+}
+
+.btn-client:hover {
+    background-color: #c51c53;
+}
+
+.btn-login {
+    background-color: #008cba;
+    color: white;
+}
+
+.btn-login:hover {
+    background-color: #006f94;
+}
+
+.btn-book {
+    background-color: #009879;
+    color: white;
+}
+
+.btn-book:hover {
+    background-color: #007e63;
+}
+
+body {
+    margin: 0;
+    background-image: url('../../../images/flightBookingbg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Optional parallax */
+    font-family: 'Segoe UI', sans-serif;
+}
+
+

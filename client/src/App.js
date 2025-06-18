@@ -11,6 +11,11 @@ import Signup from "./components/Pages/Signup";
 import CustomerPanel from "./components/Pages/CustomerPanel";
 import ViewProfile from "./components/Pages/ViewProfile";
 import AddReview from "./components/Pages/AddReview";
+import BookTicket from "./components/Pages/BookTicket";
+import AvailableFlights from "./components/Pages/AvailableFlights";
+import Invoice from "./components/Pages/Invoice";
+import BoardingPass from "./components/Pages/BoardingPass";
+import ViewCustomerTickets from "./components/Pages/ViewCustomerTickets";
 
 function App() {
   return (
@@ -21,6 +26,11 @@ function App() {
           <Route path='/CustomerPanel/:id' component={CustomerPanel}/> 
           <Route path="/viewProfile/:id" component={ViewProfile} />
           <Route path='/addreview/:id' component={AddReview}/>
+          <Route path='/BookTicket/:id' component={BookTicket}/>
+          <Route path='/AvailableFlights/:id' component={AvailableFlights}/>
+          <Route path='/Invoice/:id' component={Invoice}/>
+          <Route path='/BoardingPass/:id' component={BoardingPass}/>
+          <Route path='/ViewCustomerTickets/:id' component={ViewCustomerTickets}/>
           <>
             <Navbar/>
               <Route exact path='/' component={Home} />

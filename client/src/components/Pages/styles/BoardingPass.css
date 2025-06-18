@@ -1,0 +1,40 @@
+.boarding-container {
+  background: url('../../../images/flightBookingbg.png') no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boarding-pass {
+  background-color: rgba(255, 230, 186, 0.947);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 450px;
+  text-align: center;
+}
+
+.boarding-pass h2, .boarding-pass h3 {
+  margin-bottom: 10px;
+}
+
+.boarding-pass p {
+  margin: 8px 0;
+  font-size: 22px;
+}
+
+.btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #4fa4ff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: #afd2f8;
+}

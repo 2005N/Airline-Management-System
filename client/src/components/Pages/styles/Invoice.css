@@ -1,0 +1,46 @@
+.invoice-background {
+  background-image: url('../../../images/flightBookingbg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.invoice-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: left;
+}
+
+.invoice-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.invoice-details p {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.pay-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pay-button:hover {
+  background-color: #0056b3;
+}

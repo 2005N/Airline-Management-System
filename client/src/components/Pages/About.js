@@ -2,10 +2,9 @@ import React from 'react';
 
 function About() {
   return (
-    <div className="container mt-5">
-      <h2>About SkyHigh Airlines</h2>
+    <div className="container mt-5" style={{ fontSize:"20px"}}>
       <p>
-        SkyHigh Airlines is a demo project developed for a Database Management System (DBMS) course.
+        SkyHigh Airlines is a Database Management System (DBMS) project.
       </p>
       <ul>
         <li>Flight scheduling & tracking</li>
