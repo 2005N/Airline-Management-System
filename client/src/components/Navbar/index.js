@@ -13,7 +13,8 @@ const Navbar = () => {
             <NavLink to="/contact-us">Contact</NavLink>
         </NavMenu>
         <NavBtn>
-            <NavBtnLink to="/signup">Sign Up</NavBtnLink>
+            <NavBtnLink to="/signup" style={{ marginRight: "15px" }}>Sign Up</NavBtnLink>
+            <NavBtnLink to="/login">Log In</NavBtnLink>
         </NavBtn>
       </Nav>
     </div>

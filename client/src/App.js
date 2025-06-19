@@ -16,6 +16,7 @@ import AvailableFlights from "./components/Pages/AvailableFlights";
 import Invoice from "./components/Pages/Invoice";
 import BoardingPass from "./components/Pages/BoardingPass";
 import ViewCustomerTickets from "./components/Pages/ViewCustomerTickets";
+import Login from "./components/Pages/Login";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <ToastContainer position='top-center'/>
         <Switch>
           <Route path='/signup' component={Signup}/>
+          <Route path='/login' component={Login}/>
           <Route path='/CustomerPanel/:id' component={CustomerPanel}/> 
           <Route path="/viewProfile/:id" component={ViewProfile} />
           <Route path='/addreview/:id' component={AddReview}/>

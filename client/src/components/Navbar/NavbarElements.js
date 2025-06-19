@@ -36,7 +36,7 @@ export const Bars = styled(FaBars)`
 
 export const NavMenu = styled.div`
   display: flex;
-  gap: 20px; /* ⬅️ space between links */
+  gap: 20px; /* space between links */
   align-items: center;
 
   @media screen and (max-width: 768px) {

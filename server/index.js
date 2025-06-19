@@ -37,6 +37,26 @@ app.post("/signup", (req, res) => {
   );
 });
 
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const sql = "SELECT client_id, password FROM clients WHERE email = ?";
+  db.query(sql, [email], (err, results) => {
+    if (err) {
+      return res.json({ err: "Database error" });
+    }
+    if (results.length === 0) {
+      return res.json({ err: "User not found" });
+    }
+    const user = results[0];
+
+    if (user.password !== password) {
+      return res.json({ err: "Invalid password" });
+    }
+
+    res.json({ id: user.client_id });
+  });
+});
+
 app.get("/CustomerPanel/:id",(req,res)=>{
     const {id}=req.params;
     const sqlGet="select * from clients where client_id=?;"
