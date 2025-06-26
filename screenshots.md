@@ -6,3 +6,7 @@
 ![image](https://github.com/user-attachments/assets/6fc17675-16eb-435e-b424-0927807bd5c2)
 ![image](https://github.com/user-attachments/assets/ba07ef71-ad4a-4c4d-9905-18a4a6961c40)
 ![image](https://github.com/user-attachments/assets/f2abf986-a848-48df-87dd-58119958c7e0)
+
+
+ERD
+![airline_erd](https://github.com/user-attachments/assets/bae7cdeb-859f-4821-b9dc-0d92ccb9a79f)
