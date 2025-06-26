@@ -6,6 +6,7 @@ A simple full-stack flight booking web application built with React, Node.js/Exp
 
 ## Project Structure
 /client -> React frontend 
+
 /server -> Express backend
 
 
